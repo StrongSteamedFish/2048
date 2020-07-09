@@ -1,0 +1,80 @@
+/* 标题容器宽度，居中 */
+header {
+    display: block;
+    margin: 0 auto;
+    width: 500px;
+    text-align: center;
+}
+
+/* 标题文字属性 */
+header h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+/* newgame按钮 */
+header #newgamebutton {
+    display: block;
+    margin: 20px auto;
+
+    width: 100px;
+    padding: 10px 10px;
+    background-color: #8f7a66;
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+}
+header #newgamebutton:hover {
+    background-color: #9f8b77;
+}
+
+/* 分数 */
+header p {
+    margin: 20px auto;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+}
+
+/* 棋盘格 */
+#grid-container{
+    position: relative;
+
+    width: 460px;
+    height: 460px;
+    margin: 50px auto;
+
+    padding: 20px;
+    background-color: #bbada0;
+
+    border-radius: 10px;
+}
+
+/* 棋盘单元格(未定位） */
+.grid-cell {
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 6px;
+    background-color: #ccc0b3;
+}
+
+/* 数字格（包含在棋盘单元格内，游戏中代码生成） */
+.number-cell {
+    position: absolute;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 100px;
+    text-align: center;
+
+    border-radius: 6px;
+}
