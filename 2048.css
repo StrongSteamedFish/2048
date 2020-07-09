@@ -9,14 +9,15 @@ header {
 /* 标题文字属性 */
 header h1 {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 60px;
+    /* font-size: 60px; */
     font-weight: bold;
+    margin: 15px auto;
 }
 
 /* newgame按钮 */
 header #newgamebutton {
     display: block;
-    margin: 20px auto;
+    /* margin: 20px auto; */
 
     width: 100px;
     padding: 10px 10px;

@@ -20,11 +20,24 @@ $(document).ready(function(){
 // 定义尺寸
 function defineSize(){
     $("header").css("width", boardSize + "px");
+    $("header h1").css("font-size", 0.6 * gridSize + "px");
+    $("header #newgamebutton").css({
+        "margin-top" : 0.5 * gridGap + "px",
+        "margin-bottom" : 0.5 * gridGap + "px",
+        "margin-left" : "auto",
+        "margin-right" : "auto",
+    });
+    $("header p").css({
+        "margin-top" : 0.5 * gridGap + "px",
+        "margin-bottom" : 0.5 * gridGap + "px",
+        "margin-left" : "auto",
+        "margin-right" : "auto",
+    })
     $("#grid-container").css({
         "width" : boardSize * 0.92 + "px",
         "height" : boardSize * 0.92 + "px",
-        "margin-top" : boardSize * 0.1 + "px",
-        "margin-bottom" : boardSize * 0.1 + "px",
+        "margin-top" : boardSize * 0.05 + "px",
+        "margin-bottom" : boardSize * 0.05 + "px",
         "margin-left" : "auto",
         "margin-right" : "auto",
         "padding" : gridGap + "px",
