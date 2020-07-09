@@ -1,17 +1,19 @@
 // 显示数字的动画
-function showNumberWithAnimation(i, j, number){
+function showNumberWithAnimation(i, j, number, gridSize){
     // 获取要显示的数字单元格
     var $numberCell = $('#number-cell-' + i + '-' + j + '');
     // 设置CSS和文字内容
     $numberCell.css('background-color',getNumberBackgroundColor(number));
     $numberCell.css('color',getNumberColor(number));
-    $numberCell.css('font-size',getNumberFontSize(board[i][j]));
+    $numberCell.css('font-size',getNumberFontSize(board[i][j],gridSize));
+    $numberCell.css('line-height', gridSize + 'px');
+    $numberCell.css('border-radius', 0.06 * gridSize + "px");
     $numberCell.text(number);
 
     // 设置动画
     $numberCell.animate({
-        width: "100px",
-        height: "100px",
+        width: gridSize + "px",
+        height: gridSize + "px",
         top: getPosition(i),
         left: getPosition(j)
     }, 200);

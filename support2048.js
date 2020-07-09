@@ -1,6 +1,6 @@
 // 根据序号获得坐标
 function getPosition(pos){
-    return 20 + pos * 120;
+    return gridGap + pos * (gridSize + gridGap);
 }
 
 // 根据数字获得背景颜色
@@ -59,15 +59,15 @@ function getNumberColor(number) {
 }
 
 // 根据数字长度获得字体大小
-function getNumberFontSize(number){
+function getNumberFontSize(number, gridSize){
     var len = number.toString().length;
     if (len < 3){
-        return "60px";
-    }else if(len > 2 && len < 6){
-        var size = 80 - 10 * len;
+        return 0.6 * gridSize + "px";
+    }else if(len > 2 && len < 7){
+        var size = (0.8 - 0.1 * len) * gridSize;
         return size + "px";
-    }else if(len > 5){
-        return "22px";
+    }else if(len > 6){
+        return "16px";
     }
 }
 

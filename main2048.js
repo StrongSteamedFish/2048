@@ -4,9 +4,49 @@ var hasConflicted = new Array(); // 用于储存格子是否发生碰撞
 var score = 0; // 用于储存分数
 var success = false; // 用于储存是否已经达成2048
 
+// 储存获取到的窗口大小以及相关大小
+var documentWidth = window.screen.availWidth; //窗口大小
+var boardSize = 500; // 棋盘大小
+var gridGap = boardSize * 0.04; // 单元格间隙
+var gridSize = boardSize * 0.2 // 单元格大小
+
+// 载入刷新
 $(document).ready(function(){
+    prepareForMobile(); // 适配移动设备
+    defineSize(); // 定义尺寸
     newgame();
 });
+
+// 定义尺寸
+function defineSize(){
+    $("header").css("width", boardSize + "px");
+    $("#grid-container").css({
+        "width" : boardSize * 0.92 + "px",
+        "height" : boardSize * 0.92 + "px",
+        "margin-top" : boardSize * 0.1 + "px",
+        "margin-bottom" : boardSize * 0.1 + "px",
+        "margin-left" : "auto",
+        "margin-right" : "auto",
+        "padding" : gridGap + "px",
+        "border-radius" : 0.5 * gridGap + "px"
+    });
+    $(".grid-cell").css({
+        "width" : gridSize + "px",
+        "height" : gridSize + "px",
+        "border-radius" : 0.06 * gridSize + "px"
+    });
+}
+
+// 适配移动设备
+function prepareForMobile(){
+    // 如果窗口大小小于500则需要进行适配
+    if (documentWidth < 500){
+        // 棋盘大小
+        boardSize = 0.9 * documentWidth;
+        gridGap = boardSize * 0.04;
+        gridSize = boardSize * 0.2;
+    }
+}
 
 // 新游戏
 function newgame(){
@@ -65,18 +105,21 @@ function updateBoardView() {
             if(board[i][j] == 0){
                 $theNumberCell.css("width","0px");
                 $theNumberCell.css("height","0px");
-                $theNumberCell.css("top",getPosition(i) + 50);
-                $theNumberCell.css("left",getPosition(j) + 50);
+                $theNumberCell.css("top",getPosition(i) + 0.5 * gridSize);
+                $theNumberCell.css("left",getPosition(j) + 0.5 * gridSize);
             }else{
-                $theNumberCell.css('width', '100px');
-                $theNumberCell.css('height', '100px');
+                // 根据设备数据生成单元格的大小、行高、圆角
+                $theNumberCell.css('width', gridSize + 'px');
+                $theNumberCell.css('height', gridSize + 'px');
+                $theNumberCell.css('line-height', gridSize + 'px');
+                $theNumberCell.css('border-radius', 0.06 * gridSize + "px");
+                // 根据当前数字的长度和设备数据设置字体大小
+                $theNumberCell.css('font-size',getNumberFontSize(board[i][j],gridSize));
                 $theNumberCell.css('top', getPosition(i));
                 $theNumberCell.css('left', getPosition(j));
                 // 根据数字判断填充的单元格和数字颜色
                 $theNumberCell.css('background-color', getNumberBackgroundColor(board[i][j]));
                 $theNumberCell.css('color', getNumberColor(board[i][j]));
-                // 根据当前数字的长度设置字体大小
-                $theNumberCell.css('font-size',getNumberFontSize(board[i][j]));
                 // 填入数字
                 $theNumberCell.text(board[i][j]);
             }
@@ -85,11 +128,6 @@ function updateBoardView() {
             hasConflicted[i][j] = false;
         }
     }
-}
-
-function test(){
-    var $theNumberCells = $('.number-cell');
-    $theNumberCells.css('font-size','40px');
 }
 
 // 随机在一个空格子上生成数字
@@ -131,7 +169,7 @@ function generateOneNumber(){
 
     // 在生成的这个位置上显示这个数字
     board[randx][randy] = randNumber;
-    showNumberWithAnimation(randx, randy, randNumber);
+    showNumberWithAnimation(randx, randy, randNumber, gridSize);
     return true;
 }
 
