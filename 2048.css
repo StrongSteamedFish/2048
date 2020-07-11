@@ -1,3 +1,16 @@
+/* 禁止文字选中 */
+html{
+
+    -webkit-user-select:none;
+
+     -moz-user-select:none;
+
+     -ms-user-select:none;
+
+     user-select:none;
+
+}
+
 /* 标题容器宽度，居中 */
 header {
     display: block;

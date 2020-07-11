@@ -1,8 +1,19 @@
 // 全局变量声明
 var board = new Array(); // 用于储存面板信息
+var preBoard = new Array(); // 用于储存操作前的记忆面板
 var hasConflicted = new Array(); // 用于储存格子是否发生碰撞
+var preScore = 0; // 用于记忆上一次分数
 var score = 0; // 用于储存分数
 var success = false; // 用于储存是否已经达成2048
+var canCheat = true; // 作弊功能是否可用
+var cheatCounter = 0; // 启动作弊功能的计数器
+
+// 复制二维数组的方法arr2 ==> arr1
+function copyArrs(arr1,arr2){
+    for (var i = 0; i < 4; i++){
+        $.extend(arr1[i],arr2[i]);
+    }
+}
 
 // 储存获取到的窗口大小以及相关大小
 var documentWidth = window.screen.availWidth; //窗口大小
@@ -85,14 +96,17 @@ function init(){
     for (var i = 0; i < 4; i++){
         board[i] = new Array();
         hasConflicted[i] = new Array;
+        preBoard[i] = new Array();
         for (var j = 0; j < 4; j++){
             board[i][j] = 0;
             hasConflicted[i][j] = false;
+            preBoard[i][j] = 0;
         }
     }
 
     // 初始化分数
     score = 0;
+    preScore = 0;
     // 初始化成就
     success = false;
 
@@ -100,6 +114,9 @@ function init(){
     updateBoardView();
     // 绘制分数
     updateScore(score);
+    // 初始化作弊功能
+    canCheat = true;
+    cheatCounter = 0;
 }
 
 // 绘制数字面板函数
@@ -296,6 +313,8 @@ function moveLeft(){
     }
 
     // 如果可以移动
+    // 记忆面板用于反悔
+    copyArrs(preBoard,board);
     /* 按行遍历board的每行后三格
      * ①该格子为0，则不进行移动
      * ②该格子左侧（从左到右依次判断）的格子和该格子之间全部是空格子 且也为空
@@ -327,6 +346,8 @@ function moveLeft(){
                             board[i][k] += board[i][j];
                             board[i][j] = 0;
                             hasConflicted[i][k] = true
+                            // 先储存记忆分数用于反悔
+                            preScore = score;
                             // 增加分数
                             score += board[i][k];
                             updateScore(score);
@@ -350,6 +371,8 @@ function moveRight(){
     }
 
     // 如果可以移动
+    // 记忆面板用于反悔
+    copyArrs(preBoard,board);
     // 按行遍历board的每行前三格(从右到左)
     for (var i = 0; i < 4; i++){
         for (var j = 2; j > -1; j--){
@@ -377,6 +400,8 @@ function moveRight(){
                             board[i][k] += board[i][j];
                             board[i][j] = 0;
                             hasConflicted[i][k] = true
+                            // 先储存记忆分数用于反悔
+                            preScore = score;
                             // 增加分数
                             score += board[i][k];
                             updateScore(score);
@@ -400,6 +425,8 @@ function moveUp(){
     }
 
     // 如果可以移动
+    // 记忆面板用于反悔
+    copyArrs(preBoard,board);
     // 按列遍历board的每列后三格
     for (var j = 0; j < 4; j++){
         for (var i = 1; i < 4; i++){
@@ -427,6 +454,8 @@ function moveUp(){
                             board[k][j] += board[i][j];
                             board[i][j] = 0;
                             hasConflicted[k][j] = true
+                            // 先储存记忆分数用于反悔
+                            preScore = score;
                             // 增加分数
                             score += board[k][j];
                             updateScore(score);
@@ -450,6 +479,8 @@ function moveDown(){
     }
 
     // 如果可以移动
+    // 记忆面板用于反悔
+    copyArrs(preBoard,board);
     // 按列遍历board的每列前三格(从下到上)
     for (var j = 0; j < 4; j++){
         for (var i = 3; i > -1; i--){
@@ -477,6 +508,8 @@ function moveDown(){
                             board[k][j] += board[i][j];
                             board[i][j] = 0;
                             hasConflicted[k][j] = true
+                            // 先储存记忆分数用于反悔
+                            preScore = score;
                             // 增加分数
                             score += board[k][j];
                             updateScore(score);
@@ -525,3 +558,29 @@ function complete2048(board){
         }
     }
 }
+
+// -------------------------------------------------------
+// 作弊功能
+function cheat(){
+    // 用上一次的面板和分数重新绘制
+    copyArrs(board,preBoard);
+    score = preScore;
+    updateBoardView();
+    updateScore(score);
+}
+
+// 初始化作弊功能
+$(document).ready(function(){
+    $("h1").on("click",function(){
+        cheatCounter += 1;
+        if (cheatCounter == 10){
+            if (canCheat){
+                cheat();
+                canCheat = false;
+            }else{
+                alert("想什么呢？")
+            }
+            cheatCounter = 0;
+        }
+    })
+})
