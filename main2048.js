@@ -237,6 +237,69 @@ $(document).keydown(function(e){
     }
 })
 
+// 处理触摸上下左右滑动
+var startX;
+var startY;
+var moveEndX;
+var moveEndY;
+$("html").on("touchstart",function(e){
+    // 判断默认行为是否可以被禁用
+    if(e.cancelable) {
+        // 判断行为是否已经禁用
+        if (!e.defaultPrevented) {
+            e.preventDefault();
+        }
+    }
+    startX = e.originalEvent.changedTouches[0].pageX;
+    startY = e.originalEvent.changedTouches[0].pageY;
+}).on("touchend",function(e){
+    if(e.cancelable) {
+        // 判断行为是否已经禁用
+        if (!e.defaultPrevented) {
+            e.preventDefault();
+        }
+    }
+    moveEndX = e.originalEvent.changedTouches[0].pageX;
+    moveEndY = e.originalEvent.changedTouches[0].pageY;
+    var X = moveEndX - startX;
+    var Y = moveEndY - startY;
+    // 判断滑动方向：
+    if(X > 2 * Math.abs(Y)){
+        // 右滑
+        if (moveRight()){
+            setTimeout(generateOneNumber,210);
+            setTimeout(is2048,250);
+            setTimeout(isgameover,300);
+        }
+    }else if(0 - X > 2 * Math.abs(Y)){
+        // 左滑
+        if (moveLeft()){ // 如果成功执行了向左移动（moveLeft()返回true）
+            setTimeout(generateOneNumber,210); // 延迟210毫秒（等待动画完成）生成数字
+            setTimeout(is2048,250); // 延迟250毫秒判断是否达成2048
+            setTimeout(isgameover,300); // 延迟300毫秒判断游戏是否结束
+        }
+    }else if(Y > 2 * Math.abs(X)){
+        // 下滑
+        if (moveDown()){
+            setTimeout(generateOneNumber,210);
+            setTimeout(is2048,250);
+            setTimeout(isgameover,300);
+        }
+    }else if(0 - Y > 2 * Math.abs(X)){
+        // 上滑
+        if (moveUp()){
+            setTimeout(generateOneNumber,210);
+            setTimeout(is2048,250);
+            setTimeout(isgameover,300);
+        }
+    }else{
+        // 点击
+        if (e.target.id == "newgamebutton"){
+            newgame();
+        }
+    }
+})
+
 // -----------------------------------------------------------------------------------------
 
 // 向左移动
