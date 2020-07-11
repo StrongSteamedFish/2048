@@ -237,28 +237,19 @@ $(document).keydown(function(e){
     }
 })
 
+// 禁用触摸页面滑动
+document.addEventListener('touchmove', function(e){
+    e.preventDefault();
+}, {passive: false});
 // 处理触摸上下左右滑动
 var startX;
 var startY;
 var moveEndX;
 var moveEndY;
 $("html").on("touchstart",function(e){
-    // 判断默认行为是否可以被禁用
-    if(e.cancelable) {
-        // 判断行为是否已经禁用
-        if (!e.defaultPrevented) {
-            e.preventDefault();
-        }
-    }
     startX = e.originalEvent.changedTouches[0].pageX;
     startY = e.originalEvent.changedTouches[0].pageY;
 }).on("touchend",function(e){
-    if(e.cancelable) {
-        // 判断行为是否已经禁用
-        if (!e.defaultPrevented) {
-            e.preventDefault();
-        }
-    }
     moveEndX = e.originalEvent.changedTouches[0].pageX;
     moveEndY = e.originalEvent.changedTouches[0].pageY;
     var X = moveEndX - startX;
@@ -291,11 +282,6 @@ $("html").on("touchstart",function(e){
             setTimeout(generateOneNumber,210);
             setTimeout(is2048,250);
             setTimeout(isgameover,300);
-        }
-    }else{
-        // 点击
-        if (e.target.id == "newgamebutton"){
-            newgame();
         }
     }
 })
